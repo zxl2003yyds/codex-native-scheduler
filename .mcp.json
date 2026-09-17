@@ -1,0 +1,6 @@
+{
+  "codex-native-scheduler": {
+    "command": "python3",
+    "args": ["server/mcp_server.py"]
+  }
+}

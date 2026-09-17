@@ -1,0 +1,59 @@
+# macOS / Finder
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Python bytecode / test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE / editor state
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+
+# Scheduler runtime state (normally stored outside the repo)
+tasks.json
+tasks.backup.json
+tasks.json.backup-*
+task-events.jsonl
+runs.jsonl
+catalog.json
+settings.json
+*.lock
+*.pid
+worker.log
+worker-error.log
+repo-locks/
+thread-locks/
+thread-writer-locks/
+appserver-pids/
+worktrees/
+
+# Build / packaging output
+build/
+dist/
+*.zip
+*.app/
+*.icns
+
+# Temporary files
+*.tmp
+*.temp
+*.bak

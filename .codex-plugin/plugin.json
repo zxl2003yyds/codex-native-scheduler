@@ -1,0 +1,31 @@
+{
+  "name": "codex-native-scheduler",
+  "version": "1.4.6",
+  "description": "Quota-aware Codex task scheduler with a minimal realtime local UI, exact-time execution, multi-task queue, checkpointed auto-resume, repo locking, Git/filesystem baselines, approval safety and quota-free management.",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "scheduler",
+    "automation",
+    "continuity",
+    "git",
+    "productivity"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Codex Scheduler",
+    "shortDescription": "Schedule and safely resume Codex work across usage windows",
+    "longDescription": "Use the quota-free local scheduler to select real Codex conversations, models, reasoning, skills, exact date/time and prompts. Tasks can wait for quota/model/network/project availability, checkpoint interrupted work, resume the same conversation without repeating completed work, serialize writes to the same repo, record Git baselines, require interactive approval for sensitive actions, and notify you when attention is needed.",
+    "developerName": "zxl2003yyds",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Open the Codex Scheduler visual picker.",
+      "Show my scheduled Codex tasks."
+    ]
+  }
+}
