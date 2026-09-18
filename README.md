@@ -1,4 +1,6 @@
-# Codex Scheduler v1.4.6
+# Codex Scheduler v1.4.7
+
+**English** | [简体中文](README.zh-CN.md)
 
 A local macOS companion and Codex plugin for scheduling work in existing Codex conversations, waiting across usage windows, and safely resuming interrupted tasks.
 
@@ -8,10 +10,11 @@ A local macOS companion and Codex plugin for scheduling work in existing Codex c
 
 ![Codex Scheduler cover](assets/cover.png)
 
-The cover image is illustrative concept artwork and may not exactly match the current v1.4.6 interface.
+The cover image is illustrative concept artwork and may not exactly match the current interface.
 
 ## Highlights
 
+- **English + Simplified Chinese UI:** follows the system language by default and can be changed instantly in Settings. The preference stays local and does not start a Codex turn.
 - **Local management path:** creating, editing, pausing, deleting, viewing, and waiting are local operations and do not intentionally start a Codex model turn.
 - **Exact scheduling:** choose a calendar date and exact HH:MM time.
 - **Real Codex choices:** select cached/live metadata for conversations, projects, models, reasoning levels, Skills, and Apps.
@@ -42,7 +45,7 @@ cd /path/to/codex-native-scheduler
 python3 install.py
 ```
 
-Or double-click `Install Codex Scheduler.command` from Finder.
+Or double-click `Install Codex Scheduler.command` from Finder. Installer messages follow the macOS language when possible.
 
 The installer creates/updates:
 
@@ -61,6 +64,10 @@ open "$HOME/Applications/Codex Scheduler.app"
 ```
 
 Or use Spotlight and search for **Codex Scheduler**.
+
+### Language
+
+Open **Settings → Interface language** and choose **Follow system**, **English**, or **简体中文**. The UI preference is stored in browser-local storage on the same Mac and does not change task data or start a model turn.
 
 ### macOS Gatekeeper note
 
@@ -88,7 +95,7 @@ By default, tasks run in the selected workspace and a per-repository file lock s
 
 ## Execution states
 
-Tasks can be `pending`, `running`, `waiting_for_quota`, `waiting_for_repo`, `waiting_for_thread`, `waiting_for_handoff`, `waiting_for_network`, `waiting_for_model`, `needs_approval`, `needs_attention`, `paused`, `succeeded`, or `failed`.
+Tasks can be `pending`, `running`, `waiting_for_quota`, `waiting_for_repo`, `waiting_for_thread`, `waiting_for_handoff`, `waiting_for_network`, `waiting_for_model`, `needs_approval`, `needs_attention`, `paused`, `succeeded`, or `failed`. These internal values remain language-neutral; the UI localizes their labels.
 
 ## Privacy and local storage
 
@@ -104,13 +111,7 @@ The scheduler does not ask a model to summarize checkpoints. A task may still se
 
 ## Uninstall
 
-Run/double-click:
-
-```text
-Uninstall Codex Scheduler.command
-```
-
-This removes the plugin, local app, and LaunchAgent. Task history under `~/Library/Application Support/CodexNativeScheduler` is intentionally kept so it is not destroyed by uninstalling the app.
+Run/double-click `Uninstall Codex Scheduler.command`. This removes the plugin, local app, and LaunchAgent. Task history under `~/Library/Application Support/CodexNativeScheduler` is intentionally kept.
 
 ## Development and tests
 
@@ -119,11 +120,11 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 -m compileall -q server install.py tests
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution notes and [SECURITY.md](SECURITY.md) for security reporting guidance.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 
 ## Version
 
-Current release: **1.4.6**. See [CHANGELOG.md](CHANGELOG.md) for release history.
+Current release: **1.4.7**. See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

@@ -207,7 +207,7 @@ def _update_after_error(task: Dict[str, Any], now: float, exc: CodexError) -> No
         _set_wait(task, "waiting_for_repo", now + RETRY_REPO_SECONDS, "Another task is using this project")
         return
     if kind == "thread_local_busy":
-        _set_wait(task, "waiting_for_thread", now + 30, "另一个 Scheduler 任务正在使用这个 Codex 会话")
+        _set_wait(task, "waiting_for_thread", now + 30, "Another Scheduler task is using this Codex conversation")
         return
     if kind == "thread_active":
         n = int(task.get("thread_busy_count") or 0)
@@ -217,7 +217,7 @@ def _update_after_error(task: Dict[str, Any], now: float, exc: CodexError) -> No
             task,
             "waiting_for_thread",
             now + delay,
-            "该 Codex 会话仍有一个实际 Codex turn 在运行；结束后会自动重试",
+            "This Codex conversation still has an active turn; Scheduler will retry automatically",
         )
         return
     if kind == "thread_writer_busy":
@@ -239,7 +239,7 @@ def _update_after_error(task: Dict[str, Any], now: float, exc: CodexError) -> No
             pass
         thread_status = str(info.get("thread_status_type") or "").lower()
         owner_labels = [str(x) for x in (diag or {}).get("owner_labels") or []]
-        owner_text = " / ".join(owner_labels) if owner_labels else "另一个 Codex 客户端"
+        owner_text = " / ".join(owner_labels) if owner_labels else "another Codex client"
         active_statuses = {"active", "running", "inprogress", "in_progress"}
         # Empty/unknown status is *not* proof that the conversation is idle.  We may
         # still back off into a handoff state after repeated conflicts, but the
@@ -267,7 +267,7 @@ def _update_after_error(task: Dict[str, Any], now: float, exc: CodexError) -> No
                     task,
                     "waiting_for_handoff",
                     now + delay,
-                    "已请求 ChatGPT Desktop 正常退出以交接会话 writer；8 秒后自动重试",
+                    "Requested ChatGPT Desktop to quit normally and release the conversation writer; retrying in 8 seconds",
                 )
                 _notify(task, "Codex Scheduler", "Requested ChatGPT Desktop to release the selected Codex conversation")
                 return
@@ -275,14 +275,14 @@ def _update_after_error(task: Dict[str, Any], now: float, exc: CodexError) -> No
         elapsed = now - float(task.get("thread_writer_since") or now)
         handoff_state = explicitly_idle or n >= 2 or elapsed >= 120
         if handoff_state:
-            reason = f"Codex turn 已空闲，但 writer 仍由 {owner_text} 持有；Scheduler 会低频等待所有权释放"
+            reason = f"The Codex turn is idle, but the writer is still held by {owner_text}; Scheduler will wait for ownership to be released"
             _set_wait(task, "waiting_for_handoff", now + delay, reason)
             last_notice = float(task.get("writer_notified_at") or 0)
             if not last_notice or now - last_notice >= 30 * 60:
                 task["writer_notified_at"] = now
                 _notify(task, "Codex Scheduler", f"Conversation is idle but still owned by {owner_text}")
         else:
-            _set_wait(task, "waiting_for_thread", now + delay, f"Codex 会话 writer 正由 {owner_text} 占用；释放后会自动重试")
+            _set_wait(task, "waiting_for_thread", now + delay, f"The Codex conversation writer is held by {owner_text}; Scheduler will retry after it is released")
         return
     if kind == "network":
         _set_wait(task, "waiting_for_network", now + RETRY_NETWORK_SECONDS, "Network unavailable")

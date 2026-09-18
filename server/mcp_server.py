@@ -32,7 +32,7 @@ from storage import (
     update_task,
 )
 
-UI_URI = "ui://codex-native-scheduler/v1.4.6.html"
+UI_URI = "ui://codex-native-scheduler/v1.4.7.html"
 UI_HTML = (ROOT / "ui" / "scheduler.html").read_text(encoding="utf-8")
 _CACHE: Dict[str, Any] = {"at": 0.0, "catalog": None}
 
@@ -220,7 +220,7 @@ def main() -> None:
         method, rid = msg.get("method"), msg.get("id")
         if method == "initialize":
             pv = (msg.get("params") or {}).get("protocolVersion") or "2025-06-18"
-            send({"jsonrpc": "2.0", "id": rid, "result": {"protocolVersion": pv, "capabilities": {"tools": {}, "resources": {}}, "serverInfo": {"name": "codex-native-scheduler", "version": "1.4.6"}, "instructions": "Prefer the quota-free local Codex Scheduler app for scheduling. Opening/managing the local scheduler does not start a Codex model turn. Keep tool chatter minimal."}})
+            send({"jsonrpc": "2.0", "id": rid, "result": {"protocolVersion": pv, "capabilities": {"tools": {}, "resources": {}}, "serverInfo": {"name": "codex-native-scheduler", "version": "1.4.7"}, "instructions": "Prefer the quota-free local Codex Scheduler app for scheduling. Opening/managing the local scheduler does not start a Codex model turn. Keep tool chatter minimal."}})
         elif method in ("notifications/initialized", "initialized"):
             continue
         elif method == "tools/list":

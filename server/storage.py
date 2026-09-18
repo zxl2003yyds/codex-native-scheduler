@@ -33,23 +33,23 @@ LOCK_PATH = APP_HOME / ".lock"
 
 PRESETS: Dict[str, Dict[str, str]] = {
     "continue": {
-        "label": "继续未完成任务",
+        "label": "Continue unfinished work",
         "prompt": "Continue the unfinished work in this thread. Preserve completed work, finish the remaining steps, and run the relevant checks.",
     },
     "usage_resume": {
-        "label": "额度恢复后继续",
+        "label": "Continue after quota reset",
         "prompt": "Continue from where this thread stopped after the usage limit. Preserve completed work, finish the pending task, and run the relevant checks.",
     },
     "tests_fix": {
-        "label": "运行测试并修复",
+        "label": "Run tests and fix",
         "prompt": "Run the relevant tests, typecheck, lint, or build. Fix verified failures without unrelated refactors, then rerun the failed checks.",
     },
     "next_plan": {
-        "label": "执行计划下一阶段",
+        "label": "Run next plan phase",
         "prompt": "Implement the next unfinished phase of the latest plan in this thread. Check the current code first and run relevant validation when done.",
     },
     "review_changes": {
-        "label": "检查最近修改",
+        "label": "Review recent changes",
         "prompt": "Review the latest project changes for verified regressions or missing checks. Fix clear issues and run the relevant validation.",
     },
 }

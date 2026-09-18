@@ -199,7 +199,7 @@ class CodexAppServer:
                 "clientInfo": {
                     "name": "codex_native_scheduler",
                     "title": "Codex Native Scheduler",
-                    "version": "1.4.6",
+                    "version": "1.4.7",
                 },
                 "capabilities": {"experimentalApi": False},
             },

@@ -237,7 +237,7 @@ def _event_payload() -> Dict[str, Any]:
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "CodexSchedulerLocal/1.4.6"
+    server_version = "CodexSchedulerLocal/1.4.7"
 
     def log_message(self, fmt: str, *args: Any) -> None:
         return
@@ -357,7 +357,7 @@ class Handler(BaseHTTPRequestHandler):
             self._asset(parsed.path.split("/assets/", 1)[1])
             return
         if parsed.path == "/health":
-            self._json(200, {"ok": True, "mode": "local-zero-turn", "version": "1.4.6"})
+            self._json(200, {"ok": True, "mode": "local-zero-turn", "version": "1.4.7"})
             return
         self.send_error(404)
 

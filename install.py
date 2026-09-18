@@ -3,15 +3,17 @@ from __future__ import annotations
 import json
 import os
 import plistlib
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
+import locale
 from pathlib import Path
 
 NAME = "codex-native-scheduler"
 LABEL = "com.codex.native-scheduler"
-VERSION = "1.4.6"
+VERSION = "1.4.7"
 SRC = Path(__file__).resolve().parent
 HOME = Path.home()
 DEST = HOME / ".codex/plugins" / NAME
@@ -20,6 +22,32 @@ APP_HOME = HOME / "Library/Application Support/CodexNativeScheduler"
 PLIST = HOME / "Library/LaunchAgents" / (LABEL + ".plist")
 LOCAL_APP = HOME / "Applications/Codex Scheduler.app"
 
+
+
+def preferred_language() -> str:
+    if sys.platform == "darwin":
+        try:
+            r = subprocess.run(["defaults", "read", "-g", "AppleLanguages"], capture_output=True, text=True, timeout=2)
+            if r.returncode == 0:
+                m = re.search(r'\"([^\"]+)\"', r.stdout)
+                if m:
+                    return "zh-CN" if m.group(1).lower().startswith("zh") else "en"
+        except Exception:
+            pass
+    for value in [os.environ.get("LC_ALL"), os.environ.get("LC_MESSAGES"), os.environ.get("LANG")]:
+        value = str(value or "").strip().lower()
+        if value and value not in {"c", "posix", "c.utf-8", "c.utf8"}:
+            return "zh-CN" if value.startswith("zh") else "en"
+    try:
+        value = str(locale.getlocale()[0] or "").lower()
+        if value:
+            return "zh-CN" if value.startswith("zh") else "en"
+    except Exception:
+        pass
+    return "en"
+
+def say(en: str, zh: str) -> None:
+    print(zh if preferred_language() == "zh-CN" else en)
 
 def shlex_quote(value: str) -> str:
     import shlex
@@ -192,7 +220,7 @@ def write_local_app(py: str, codex: str | None):
 
 def main():
     if sys.platform != "darwin":
-        print("This installer currently targets macOS.")
+        say("This installer currently targets macOS.", "此安装程序目前仅支持 macOS。")
         return 2
     py = str(Path(sys.executable).resolve())
     codex = detect_codex()
@@ -201,15 +229,16 @@ def main():
     merge_marketplace()
     write_service(py, codex)
     write_local_app(py, codex)
-    print("\n✓ Codex Scheduler v1.4.6 files installed")
-    print("✓ Personal plugin marketplace updated (existing entries preserved)")
-    print("✓ Background scheduler installed")
-    print("✓ Quota-free local app installed:", LOCAL_APP)
-    print("✓ App cover + macOS icon installed")
-    print("✓ Codex binary:", codex or "not detected yet")
-    print("\nQuota-free entry: open 'Codex Scheduler' from ~/Applications or Spotlight.")
-    print("Optional embedded entry: restart ChatGPT manually → Plugins → Personal Local Plugins → Codex Scheduler.")
-    print("Note: installer intentionally does not reopen ChatGPT, so an idle Codex thread is not immediately re-owned by Desktop.")
+    zh = preferred_language() == "zh-CN"
+    print("\n" + ("✓ Codex Scheduler v1.4.7 文件安装完成" if zh else "✓ Codex Scheduler v1.4.7 files installed"))
+    print("✓ Personal Plugin Marketplace 已更新（保留其他条目）" if zh else "✓ Personal plugin marketplace updated (existing entries preserved)")
+    print("✓ 后台调度器已安装" if zh else "✓ Background scheduler installed")
+    print(("✓ 本地免模型调用应用已安装：" if zh else "✓ Quota-free local app installed:"), LOCAL_APP)
+    print("✓ 应用封面与 macOS 图标已安装" if zh else "✓ App cover + macOS icon installed")
+    print(("✓ Codex 可执行文件：" if zh else "✓ Codex binary:"), codex or ("暂未检测到" if zh else "not detected yet"))
+    print("\n本地入口：从 ~/Applications 或 Spotlight 打开 ‘Codex Scheduler’。" if zh else "\nQuota-free entry: open 'Codex Scheduler' from ~/Applications or Spotlight.")
+    print("可选嵌入入口：手动重启 ChatGPT → Plugins → Personal Local Plugins → Codex Scheduler。" if zh else "Optional embedded entry: restart ChatGPT manually → Plugins → Personal Local Plugins → Codex Scheduler.")
+    print("说明：安装程序不会自动重新打开 ChatGPT，避免空闲 Codex 会话立刻被 Desktop 重新占用 writer。" if zh else "Note: installer intentionally does not reopen ChatGPT, so an idle Codex thread is not immediately re-owned by Desktop.")
     return 0
 
 

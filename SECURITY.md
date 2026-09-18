@@ -1,5 +1,7 @@
 # Security Policy
 
+**English** | [简体中文](SECURITY.zh-CN.md)
+
 ## Supported version
 
 Security fixes are applied to the latest release of Codex Scheduler.
@@ -16,4 +18,4 @@ Please use GitHub private vulnerability reporting for this repository when avail
 
 ## Secrets
 
-Never commit API keys, access tokens, private keys, `.env` files, scheduler task data, or local application-support data. The repository `.gitignore` excludes common local/runtime files, but contributors should still review `git diff --cached` before every push.
+Never commit API keys, access tokens, private keys, `.env` files, scheduler task data, or local application-support data. Review `git diff --cached` before every push.

@@ -15,7 +15,7 @@ SERVER = ROOT / "server"
 sys.path.insert(0, str(SERVER))
 
 # Isolate every test run from the real user's scheduler data.
-TEST_HOME = Path(tempfile.mkdtemp(prefix="codex-scheduler-v146-tests-"))
+TEST_HOME = Path(tempfile.mkdtemp(prefix="codex-scheduler-v147-tests-"))
 os.environ["CODEX_NATIVE_SCHEDULER_HOME"] = str(TEST_HOME / "scheduler")
 os.environ["CODEX_HOME"] = str(TEST_HOME / "codex")
 
@@ -25,7 +25,7 @@ import worker  # noqa: E402
 from codex_bridge import CodexAppServer, CodexError  # noqa: E402
 
 
-class V146Tests(unittest.TestCase):
+class V147Tests(unittest.TestCase):
     def setUp(self):
         storage.ensure_home()
         storage.save_tasks([])
@@ -40,7 +40,7 @@ class V146Tests(unittest.TestCase):
             "effort": None,
             "skill": None,
             "apps": [],
-            "prompt": "继续完成",
+            "prompt": "continue",
             "preset": "custom",
             "permission": "workspaceWrite",
             "network": False,
@@ -76,6 +76,26 @@ class V146Tests(unittest.TestCase):
             "next_run": time.time() + 3600,
             "timezone": storage.load_settings().get("timezone"),
         }
+
+    def test_bilingual_public_docs_exist(self):
+        for name in [
+            "README.md", "README.zh-CN.md",
+            "SECURITY.md", "SECURITY.zh-CN.md",
+            "CONTRIBUTING.md", "CONTRIBUTING.zh-CN.md",
+            "CHANGELOG.md", "CHANGELOG.zh-CN.md",
+        ]:
+            self.assertTrue((ROOT / name).exists(), name)
+        self.assertIn("简体中文", (ROOT / "README.md").read_text(encoding="utf-8"))
+        self.assertIn("English", (ROOT / "README.zh-CN.md").read_text(encoding="utf-8"))
+
+    def test_v147_ui_has_local_language_switch(self):
+        ui = (ROOT / "ui" / "scheduler.html").read_text(encoding="utf-8")
+        self.assertIn("codex-scheduler-language", ui)
+        self.assertIn('id="language"', ui)
+        self.assertIn("function setLanguage", ui)
+        self.assertIn("Follow system", ui)
+        self.assertIn("简体中文", ui)
+        self.assertIn("v1.4.7", ui)
 
     def test_stale_worker_snapshot_never_erases_newer_task(self):
         first = storage.create_task(self.task_payload("task-a"))

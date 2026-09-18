@@ -57,3 +57,5 @@ dist/
 *.tmp
 *.temp
 *.bak
+
+*.log

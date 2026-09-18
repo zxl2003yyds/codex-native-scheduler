@@ -21,3 +21,11 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
       - name: Compile check
         run: python3 -m compileall -q server install.py tests
+      - name: UI JavaScript syntax check
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          html = Path('ui/scheduler.html').read_text(encoding='utf-8')
+          Path('/tmp/codex-scheduler-ui.js').write_text(html.split('<script>', 1)[1].split('</script>', 1)[0], encoding='utf-8')
+          PY
+          node --check /tmp/codex-scheduler-ui.js

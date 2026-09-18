@@ -1,3 +1,14 @@
+# v1.4.7 — Bilingual UI & Documentation
+
+- Added English and Simplified Chinese UI with automatic system-language detection.
+- Added a manual language selector in Settings: Follow system, English, or 简体中文.
+- Language preference is stored locally and does not start Codex turns or modify task data.
+- Localized task states, queue/history empty states, dialogs, notifications, settings, writer diagnostics, metadata sync messages, and form validation.
+- Added bilingual installer/uninstaller messages.
+- Added `README.zh-CN.md`, `SECURITY.zh-CN.md`, `CONTRIBUTING.zh-CN.md`, and `CHANGELOG.zh-CN.md`.
+- Kept internal task state identifiers language-neutral and preserved v1.4.6 task/settings compatibility.
+- No scheduling, quota, writer-handoff, approval, or durable task-persistence behavior was intentionally changed.
+
 # v1.4.6 — Durable Task Queue
 
 - Public-release hardening: added repository hygiene files, security/contribution guidance, and macOS CI.
